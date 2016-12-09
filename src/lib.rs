@@ -301,8 +301,7 @@ impl ::std::default::Default for Struct_MIDIThruConnectionParams {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 pub type MIDIThruConnectionParams = Struct_MIDIThruConnectionParams;
-#[link(name = "/System/Library/Frameworks/CoreMIDI.framework",
-       kind = "framework")]
+#[link(name = "CoreMIDI", kind = "framework")]
 extern "C" {
     pub static kMIDIPropertyName: CFStringRef;
     pub static kMIDIPropertyManufacturer: CFStringRef;
@@ -351,8 +350,7 @@ extern "C" {
     pub static kMIDIPropertySupportsShowControl: CFStringRef;
     pub static kMIDIPropertyDisplayName: CFStringRef;
 }
-#[link(name = "/System/Library/Frameworks/CoreMIDI.framework",
-       kind = "framework")]
+#[link(name = "CoreMIDI", kind = "framework")]
 extern "C" {
     pub fn MIDIClientCreate(name: CFStringRef, notifyProc: MIDINotifyProc,
                             notifyRefCon: *mut ::libc::c_void,
