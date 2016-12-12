@@ -2,6 +2,10 @@
 name = "coremidi-sys"
 version = "0.1.0"
 authors = ["Jonas Klesy"]
+description = "Low-level bindings for the coreMIDI framework"
+license = "MIT"
+homepage = "https://github.com/jonas-k/coremidi-sys"
+
 
 [dependencies]
 core-foundation-sys = "0.2"
