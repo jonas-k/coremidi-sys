@@ -4,7 +4,7 @@ extern crate time;
 extern crate libc;
 
 use core_foundation::string::{CFString, CFStringRef, CFStringGetLength, UniChar};
-use core_foundation::base::{TCFType, CFIndex};
+use core_foundation::base::{TCFType, CFIndex, CFRelease};
 
 use coremidi_sys::{
     MIDIGetNumberOfDestinations, MIDIGetDestination,
@@ -148,6 +148,7 @@ fn get_display_name(endpoint: MIDIEndpointRef) -> Option<String> {
                     let ch = CFStringGetCharacterAtIndex(display_name_ref, i);
                     name_chars.push(std::char::from_u32(ch as u32).unwrap());
                 }
+                CFRelease(display_name_ref as *mut libc::c_void);
                 Some(name_chars.iter().cloned().collect::<String>())
             },
             _ => None
