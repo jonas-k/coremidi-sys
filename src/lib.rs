@@ -76,6 +76,7 @@ pub type MIDICompletionProc =
     ::std::option::Option<extern "C" fn(request: *mut MIDISysexSendRequest)
                               -> ()>;
 #[repr(C)]
+#[repr(packed)]
 #[derive(Copy)]
 pub struct Struct_MIDIPacket {
     pub timeStamp: MIDITimeStamp,
@@ -90,6 +91,7 @@ impl ::std::default::Default for Struct_MIDIPacket {
 }
 pub type MIDIPacket = Struct_MIDIPacket;
 #[repr(C)]
+#[repr(packed)]
 #[derive(Copy)]
 pub struct Struct_MIDIPacketList {
     pub numPackets: UInt32,
@@ -102,6 +104,7 @@ impl ::std::default::Default for Struct_MIDIPacketList {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
+#[repr(packed)]
 #[derive(Copy)]
 pub struct Struct_MIDISysexSendRequest {
     pub destination: MIDIEndpointRef,
@@ -128,6 +131,7 @@ pub const kMIDIMsgSerialPortOwnerChanged: ::libc::c_uint = 6;
 pub const kMIDIMsgIOError: ::libc::c_uint = 7;
 pub type MIDINotificationMessageID = SInt32;
 #[repr(C)]
+#[repr(packed)]
 #[derive(Copy)]
 pub struct Struct_MIDINotification {
     pub messageID: MIDINotificationMessageID,
@@ -140,6 +144,7 @@ impl ::std::default::Default for Struct_MIDINotification {
     fn default() -> Self { unsafe { ::std::mem::zeroed() } }
 }
 #[repr(C)]
+#[repr(packed)]
 #[derive(Copy)]
 pub struct Struct_MIDIObjectAddRemoveNotification {
     pub messageID: MIDINotificationMessageID,
@@ -158,6 +163,7 @@ impl ::std::default::Default for Struct_MIDIObjectAddRemoveNotification {
 pub type MIDIObjectAddRemoveNotification =
     Struct_MIDIObjectAddRemoveNotification;
 #[repr(C)]
+#[repr(packed)]
 #[derive(Copy)]
 pub struct Struct_MIDIObjectPropertyChangeNotification {
     pub messageID: MIDINotificationMessageID,
@@ -175,6 +181,7 @@ impl ::std::default::Default for Struct_MIDIObjectPropertyChangeNotification {
 pub type MIDIObjectPropertyChangeNotification =
     Struct_MIDIObjectPropertyChangeNotification;
 #[repr(C)]
+#[repr(packed)]
 #[derive(Copy)]
 pub struct Struct_MIDIIOErrorNotification {
     pub messageID: MIDINotificationMessageID,
@@ -224,6 +231,7 @@ pub const kMIDIControlType_7BitNRPN: ::libc::c_uint = 4;
 pub const kMIDIControlType_14BitNRPN: ::libc::c_uint = 5;
 pub type MIDITransformControlType = UInt8;
 #[repr(C)]
+#[repr(packed)]
 #[derive(Copy)]
 pub struct Struct_MIDITransform {
     pub transform: MIDITransformType,
@@ -237,6 +245,7 @@ impl ::std::default::Default for Struct_MIDITransform {
 }
 pub type MIDITransform = Struct_MIDITransform;
 #[repr(C)]
+#[repr(packed)]
 #[derive(Copy)]
 pub struct Struct_MIDIControlTransform {
     pub controlType: MIDITransformControlType,
@@ -253,6 +262,7 @@ impl ::std::default::Default for Struct_MIDIControlTransform {
 }
 pub type MIDIControlTransform = Struct_MIDIControlTransform;
 #[repr(C)]
+#[repr(packed)]
 #[derive(Copy)]
 pub struct Struct_MIDIThruConnectionEndpoint {
     pub endpointRef: MIDIEndpointRef,
@@ -266,6 +276,7 @@ impl ::std::default::Default for Struct_MIDIThruConnectionEndpoint {
 }
 pub type MIDIThruConnectionEndpoint = Struct_MIDIThruConnectionEndpoint;
 #[repr(C)]
+#[repr(packed)]
 #[derive(Copy)]
 pub struct Struct_MIDIThruConnectionParams {
     pub version: UInt32,
