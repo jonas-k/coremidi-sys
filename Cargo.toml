@@ -9,4 +9,6 @@ homepage = "https://github.com/jonas-k/coremidi-sys"
 
 [dependencies]
 core-foundation-sys = "0.2"
+core-foundation = "0.2"
 libc = "0.2"
+time = "0.1"
