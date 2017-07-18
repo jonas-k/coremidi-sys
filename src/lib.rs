@@ -23,7 +23,7 @@ pub unsafe fn MIDIPacketNext(pkt: *const MIDIPacket) -> *const MIDIPacket {
 
 #[allow(dead_code)]
 mod static_test {
-    /// Statically ssert the correct size of `MIDIPacket` and `MIDIPacketList`,
+    /// Statically assert the correct size of `MIDIPacket` and `MIDIPacketList`,
     /// which require non-default alignment.
     unsafe fn assert_sizes() {
         use super::{MIDIPacket, MIDIPacketList};
