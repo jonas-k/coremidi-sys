@@ -1,12 +1,15 @@
 [package]
 name = "coremidi-sys"
-version = "1.0.0"
-authors = ["Jonas Klesy"]
-description = "Low-level bindings for the coreMIDI framework"
+version = "2.0.0"
+authors = ["Jonas Klesy", "Patrick Reisert"]
+description = "Low-level FFI bindings for the CoreMIDI framework"
 license = "MIT"
-homepage = "https://github.com/jonas-k/coremidi-sys"
-
+repository = "https://github.com/jonas-k/coremidi-sys"
+documentation = "https://docs.rs/coremidi-sys"
+categories = ["external-ffi-bindings", "multimedia::audio"]
 
 [dependencies]
 core-foundation-sys = "0.2"
-libc = "0.2"
+
+[package.metadata.docs.rs]
+default-target = "x86_64-apple-darwin"
