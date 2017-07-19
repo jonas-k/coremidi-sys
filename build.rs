@@ -1,3 +1,5 @@
 fn main() {
-    println!("cargo:rustc-link-lib=framework=CoreMIDI");
+    if std::env::var("TARGET").expect("cannot read TARGET environment variable").contains("apple") {
+        println!("cargo:rustc-link-lib=framework=CoreMIDI");
+    }
 }

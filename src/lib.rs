@@ -1,3 +1,5 @@
+#![cfg(any(target_os = "macos", target_os = "ios"))]
+
 #![allow(non_snake_case, non_upper_case_globals, non_camel_case_types)]
 
 extern crate core_foundation_sys;
