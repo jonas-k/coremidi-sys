@@ -15,7 +15,7 @@ include!("generated.rs");
 pub unsafe fn MIDIPacketNext(pkt: *const MIDIPacket) -> *const MIDIPacket {
     let ptr = &(*pkt).data as *const u8;
     let offset = (*pkt).length as isize;
-    if cfg!(target_arch = "arm") {
+    if cfg!(any(target_arch = "arm", target_arch = "aarch64")) {
         // MIDIPacket must be 4-byte aligned on ARM
         ((ptr.offset(offset + 3) as usize) & !(3usize)) as *const MIDIPacket
     } else {
