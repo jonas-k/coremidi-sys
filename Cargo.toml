@@ -9,7 +9,7 @@ documentation = "https://docs.rs/coremidi-sys"
 categories = ["external-ffi-bindings", "multimedia::audio"]
 
 [target.'cfg(any(target_os = "macos", target_os = "ios"))'.dependencies]
-core-foundation-sys = "0.2"
+core-foundation-sys = "0.7.0"
 
 [package.metadata.docs.rs]
 default-target = "x86_64-apple-darwin"
