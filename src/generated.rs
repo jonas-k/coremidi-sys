@@ -64,7 +64,6 @@ pub type MIDIReadBlock = *mut ::std::os::raw::c_void;
 pub type MIDICompletionProc =
     ::std::option::Option<unsafe extern "C" fn(request: *mut MIDISysexSendRequest)>;
 #[repr(C, packed(4))]
-#[derive(Copy, Clone)]
 pub struct MIDIPacket {
     pub timeStamp: MIDITimeStamp,
     pub length: UInt16,
@@ -114,7 +113,6 @@ fn bindgen_test_layout_MIDIPacket() {
     );
 }
 #[repr(C)]
-#[derive(Copy, Clone)]
 pub struct MIDIPacketList {
     pub numPackets: UInt32,
     pub packet: [MIDIPacket; 1usize],
