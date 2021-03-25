@@ -9,11 +9,15 @@ use core_foundation_sys::data::*;
 use core_foundation_sys::dictionary::*;
 use core_foundation_sys::propertylist::*;
 
+use std::ptr;
+
 include!("generated.rs");
 
 #[inline]
 pub unsafe fn MIDIPacketNext(pkt: *const MIDIPacket) -> *const MIDIPacket {
-    let ptr = &(*pkt).data as *const u8;
+    // Get pointer to potentially unaligned data without triggering undefined behavior
+    // addr_of does not require creating an intermediate reference to unaligned data.
+    let ptr = ptr::addr_of!((*pkt).data);
     let offset = (*pkt).length as isize;
     if cfg!(any(target_arch = "arm", target_arch = "aarch64")) {
         // MIDIPacket must be 4-byte aligned on ARM
