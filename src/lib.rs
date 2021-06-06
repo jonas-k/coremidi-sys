@@ -17,7 +17,7 @@ include!("generated.rs");
 pub unsafe fn MIDIPacketNext(pkt: *const MIDIPacket) -> *const MIDIPacket {
     // Get pointer to potentially unaligned data without triggering undefined behavior
     // addr_of does not require creating an intermediate reference to unaligned data.
-    let ptr = ptr::addr_of!((*pkt).data);
+    let ptr = ptr::addr_of!((*pkt).data) as *const u8;
     let offset = (*pkt).length as isize;
     if cfg!(any(target_arch = "arm", target_arch = "aarch64")) {
         // MIDIPacket must be 4-byte aligned on ARM
