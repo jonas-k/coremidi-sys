@@ -42,3 +42,51 @@ mod static_test {
         transmute::<_, [u8; 272]>(p);
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn midi_packet_next() {
+        const BUFFER_SIZE: usize = 65536;
+        let buffer: &mut [u8] = &mut [0; BUFFER_SIZE];
+        let pkt_list_ptr = buffer.as_mut_ptr() as *mut MIDIPacketList;
+
+        let packets = vec![
+            (1, vec![0x90, 0x40, 0x7f]),
+            (2, vec![0x90, 0x41, 0x7f]),
+        ];
+
+        unsafe {
+            let mut pkt_ptr = MIDIPacketListInit(pkt_list_ptr);
+            for pkt in &packets {
+                pkt_ptr = MIDIPacketListAdd(
+                    pkt_list_ptr,
+                    BUFFER_SIZE as u64,
+                    pkt_ptr,
+                    pkt.0,
+                    pkt.1.len() as u64,
+                    pkt.1.as_ptr(),
+                );
+                assert!(!pkt_ptr.is_null());
+            }
+        }
+
+        unsafe {
+            let pkt_ptr = &(*pkt_list_ptr).packet as *const MIDIPacket;
+            let len = (*pkt_ptr).length as usize;
+            assert_eq!(
+                &(*pkt_ptr).data[0..len],
+                &[0x90, 0x40, 0x7f]
+            );
+
+            let pkt_ptr = MIDIPacketNext(pkt_ptr);
+            let len = (*pkt_ptr).length as usize;
+            assert_eq!(
+                &(*pkt_ptr).data[0..len],
+                &[0x90, 0x41, 0x7f]
+            );
+        }
+    }
+}
