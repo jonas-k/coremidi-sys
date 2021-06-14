@@ -54,7 +54,7 @@ mod tests {
         let pkt_list_ptr = buffer.as_mut_ptr() as *mut MIDIPacketList;
 
         let packets = vec![
-            (1, vec![0x90, 0x40, 0x7f]),
+            (1, vec![0x90, 0x40, 0x7f]), // tuplet of (time, [midi bytes])
             (2, vec![0x90, 0x41, 0x7f]),
         ];
 
@@ -63,10 +63,10 @@ mod tests {
             for pkt in &packets {
                 pkt_ptr = MIDIPacketListAdd(
                     pkt_list_ptr,
-                    BUFFER_SIZE as u64,
+                    BUFFER_SIZE as ByteCount,
                     pkt_ptr,
                     pkt.0,
-                    pkt.1.len() as u64,
+                    pkt.1.len() as ByteCount,
                     pkt.1.as_ptr(),
                 );
                 assert!(!pkt_ptr.is_null());
@@ -74,17 +74,17 @@ mod tests {
         }
 
         unsafe {
-            let pkt_ptr = &(*pkt_list_ptr).packet as *const MIDIPacket;
-            let len = (*pkt_ptr).length as usize;
+            let first_packet = &(*pkt_list_ptr).packet as *const MIDIPacket; // get pointer to first midi packet in the list
+            let len = (*first_packet).length as usize;
             assert_eq!(
-                &(*pkt_ptr).data[0..len],
+                &(*first_packet).data[0..len],
                 &[0x90, 0x40, 0x7f]
             );
 
-            let pkt_ptr = MIDIPacketNext(pkt_ptr);
-            let len = (*pkt_ptr).length as usize;
+            let second_packet = MIDIPacketNext(first_packet);
+            let len = (*second_packet).length as usize;
             assert_eq!(
-                &(*pkt_ptr).data[0..len],
+                &(*second_packet).data[0..len],
                 &[0x90, 0x41, 0x7f]
             );
         }
