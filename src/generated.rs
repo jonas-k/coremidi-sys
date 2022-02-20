@@ -69,7 +69,6 @@ pub type MIDIReadBlock = *mut ::std::os::raw::c_void;
 pub type MIDICompletionProc =
     ::std::option::Option<unsafe extern "C" fn(request: *mut MIDISysexSendRequest)>;
 #[repr(C, packed(4))]
-#[derive(Debug, Copy, Clone)]
 pub struct MIDIEventPacket {
     pub timeStamp: MIDITimeStamp,
     pub wordCount: UInt32,
@@ -119,7 +118,6 @@ fn bindgen_test_layout_MIDIEventPacket() {
     );
 }
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
 pub struct MIDIEventList {
     pub protocol: MIDIProtocolID,
     pub numPackets: UInt32,
@@ -169,7 +167,6 @@ fn bindgen_test_layout_MIDIEventList() {
     );
 }
 #[repr(C, packed(4))]
-#[derive(Debug, Clone, Copy)]
 pub struct MIDIPacket {
     pub timeStamp: MIDITimeStamp,
     pub length: UInt16,
@@ -219,7 +216,6 @@ fn bindgen_test_layout_MIDIPacket() {
     );
 }
 #[repr(C)]
-#[derive(Debug)]
 pub struct MIDIPacketList {
     pub numPackets: UInt32,
     pub packet: [MIDIPacket; 1usize],
