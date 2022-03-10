@@ -5,7 +5,7 @@ Low level Rust bindings for CoreMIDI
 `generated.rs` is generated with [bindgen](https://github.com/rust-lang/rust-bindgen) 0.59.2 using the following commands:
 
 ```
-export FRAMEWORKS_DIR=/Applications/Xcode.app//Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks
+export FRAMEWORKS_DIR=$(xcrun --sdk macosx --show-sdk-path)/System/Library/Frameworks
 
 bindgen ${FRAMEWORKS_DIR}/CoreMIDI.framework/Headers/MIDIServices.h \
     --whitelist-type "MIDI.*" --whitelist-function "MIDI.*"  --whitelist-var "kMIDI.*" \
