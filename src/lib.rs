@@ -21,12 +21,15 @@ pub unsafe fn MIDIPacketNext(pkt: *const MIDIPacket) -> *const MIDIPacket {
     let ptr = ptr::addr_of!((*pkt).data) as *const u8;
     let ptr_length = ptr::addr_of!((*pkt).length) as *const u16;
     if cfg!(any(target_arch = "arm", target_arch = "aarch64")) {
-        // MIDIPacket must be 4-byte aligned on ARM
+        // MIDIPacket must be 4-byte aligned on ARM, so we need to calculate an aligned offset.
+        // We do not need `read_unaligned` for the length, because the length will never
+        // be unaligned, and `read_unaligned` would lead to less efficient machine code.
         let offset = ptr_length.read() as isize;
         ((ptr.offset(offset + 3) as usize) & !(3usize)) as *const MIDIPacket
     } else {
         // MIDIPacket is unaligned on non-ARM, so reading the length requires `read_unaligned`
-        // to not trigger Rust's UB check (although unaligned reads are harmless on Intel)
+        // to not trigger Rust's UB check (although unaligned reads are harmless on Intel
+        // and `read_unaligned` will generate the same machine code as `read`).
         let offset = ptr_length.read_unaligned() as isize;
         ptr.offset(offset) as *const MIDIPacket
     }
