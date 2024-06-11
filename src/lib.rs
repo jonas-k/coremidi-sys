@@ -97,7 +97,8 @@ mod tests {
             );
 
             let second_packet = MIDIPacketNext(first_packet);
-            let len = (*second_packet).length as usize;
+            let ptr_length = ptr::addr_of!((*second_packet).length) as *const u16;
+            let len = ptr_length.read_unaligned() as usize;
             assert_eq!(
                 &(*second_packet).data[0..len],
                 &[0x90, 0x41, 0x7f]
