@@ -54,10 +54,10 @@ mod static_test {
         use std::mem::{transmute, zeroed};
 
         let p: MIDIPacket = zeroed();
-        transmute::<_, [u8; 268]>(p);
+        transmute::<MIDIPacket, [u8; 268]>(p);
 
         let p: MIDIPacketList = zeroed();
-        transmute::<_, [u8; 272]>(p);
+        transmute::<MIDIPacketList, [u8; 272]>(p);
     }
 }
 
