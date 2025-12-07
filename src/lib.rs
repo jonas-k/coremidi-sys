@@ -95,7 +95,7 @@ mod tests {
             let first_packet = &(*pkt_list_ptr).packet as *const MIDIPacket; // get pointer to first midi packet in the list
             let len = (*first_packet).length as usize;
             assert_eq!(
-                &(*first_packet).data[0..len],
+                std::slice::from_raw_parts((*first_packet).data.as_ptr(), len),
                 &[0x90, 0x40, 0x7f]
             );
 
@@ -103,7 +103,7 @@ mod tests {
             let ptr_length = ptr::addr_of!((*second_packet).length) as *const u16;
             let len = ptr_length.read_unaligned() as usize;
             assert_eq!(
-                &(*second_packet).data[0..len],
+                std::slice::from_raw_parts((*second_packet).data.as_ptr(), len),
                 &[0x90, 0x41, 0x7f]
             );
         }
@@ -139,14 +139,14 @@ mod tests {
             let first_packet = &(*pkt_list_ptr).packet as *const MIDIEventPacket; // get pointer to first midi packet in the list
             let len = (*first_packet).wordCount as usize;
             assert_eq!(
-                &(*first_packet).words[0..len],
+                std::slice::from_raw_parts((*first_packet).words.as_ptr(), len),
                 &[10, 20]
             );
 
             let second_packet = MIDIEventPacketNext(first_packet);
             let len = (*second_packet).wordCount as usize;
             assert_eq!(
-                &(*second_packet).words[0..len],
+                std::slice::from_raw_parts((*second_packet).words.as_ptr(), len),
                 &[30, 40, 50]
             );
         }
