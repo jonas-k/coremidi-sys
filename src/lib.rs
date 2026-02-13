@@ -25,7 +25,7 @@ pub unsafe fn MIDIPacketNext(pkt: *const MIDIPacket) -> *const MIDIPacket {
         // We do not need `read_unaligned` for the length, because the length will never
         // be unaligned, and `read_unaligned` would lead to less efficient machine code.
         let offset = ptr_length.read() as isize;
-        ((ptr.offset(offset + 3) as usize) & !(3usize)) as *const MIDIPacket
+        ptr.offset(offset + 3).map_addr(|addr| addr & !(3usize)) as *const MIDIPacket
     } else {
         // MIDIPacket is unaligned on non-ARM, so reading the length requires `read_unaligned`
         // to not trigger Rust's UB check (although unaligned reads are harmless on Intel
