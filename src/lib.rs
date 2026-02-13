@@ -18,8 +18,8 @@ pub unsafe fn MIDIPacketNext(pkt: *const MIDIPacket) -> *const MIDIPacket {
     // Get pointer to potentially unaligned data without triggering undefined behavior
     // addr_of does not require creating an intermediate reference to unaligned data.
     // See also the definition of `MIDIPacketNext` in the official SDK MIDIServices.h
-    let ptr = ptr::addr_of!((*pkt).data) as *const u8;
-    let ptr_length = ptr::addr_of!((*pkt).length) as *const u16;
+    let ptr = ptr::addr_of!((*pkt).data).cast::<u8>();
+    let ptr_length = ptr::addr_of!((*pkt).length).cast::<u16>();
     if cfg!(any(target_arch = "arm", target_arch = "aarch64")) {
         // MIDIPacket must be 4-byte aligned on ARM, so we need to calculate an aligned offset.
         // We do not need `read_unaligned` for the length, because the length will never
@@ -31,7 +31,7 @@ pub unsafe fn MIDIPacketNext(pkt: *const MIDIPacket) -> *const MIDIPacket {
         // to not trigger Rust's UB check (although unaligned reads are harmless on Intel
         // and `read_unaligned` will generate the same machine code as `read`).
         let offset = ptr_length.read_unaligned() as isize;
-        ptr.offset(offset) as *const MIDIPacket
+        ptr.offset(offset).cast::<MIDIPacket>()
     }
 }
 
@@ -40,9 +40,9 @@ pub unsafe fn MIDIEventPacketNext(pkt: *const MIDIEventPacket) -> *const MIDIEve
     // Each EventPacket's size is a multiple of 4 bytes, so no special care
     // needs to be taken when reading the data (except the timeStamp, which is not 8-byte aligned).
     // See also the definition of `MIDIEventPacketNext` in the official SDK MIDIServices.h
-    let ptr = ptr::addr_of!((*pkt).words) as *const u8;
+    let ptr = ptr::addr_of!((*pkt).words).cast::<u8>();
     let offset = (((*pkt).wordCount as usize) * mem::size_of::<u32>()) as isize;
-    ptr.offset(offset) as *const MIDIEventPacket
+    ptr.offset(offset).cast::<MIDIEventPacket>()
 }
 
 #[allow(dead_code)]
@@ -69,7 +69,7 @@ mod tests {
     fn midi_packet_next() {
         const BUFFER_SIZE: usize = 65536;
         let buffer: &mut [u8] = &mut [0; BUFFER_SIZE];
-        let pkt_list_ptr = buffer.as_mut_ptr() as *mut MIDIPacketList;
+        let pkt_list_ptr = buffer.as_mut_ptr().cast::<MIDIPacketList>();
 
         let packets = vec![
             (1, vec![0x90, 0x40, 0x7f]), // tuple of (time, [midi bytes])
@@ -100,7 +100,7 @@ mod tests {
             );
 
             let second_packet = MIDIPacketNext(first_packet);
-            let ptr_length = ptr::addr_of!((*second_packet).length) as *const u16;
+            let ptr_length = ptr::addr_of!((*second_packet).length).cast::<u16>();
             let len = ptr_length.read_unaligned() as usize;
             assert_eq!(
                 std::slice::from_raw_parts((*second_packet).data.as_ptr(), len),
@@ -113,7 +113,7 @@ mod tests {
     fn midi_event_packet_next() {
         const BUFFER_SIZE: usize = 65536;
         let buffer: &mut [u8] = &mut [0; BUFFER_SIZE];
-        let pkt_list_ptr = buffer.as_mut_ptr() as *mut MIDIEventList;
+        let pkt_list_ptr = buffer.as_mut_ptr().cast::<MIDIEventList>();
 
         let packets = vec![
             (1, vec![10u32, 20]), // tuple of (time, [midi words])
