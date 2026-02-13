@@ -68,7 +68,7 @@ mod tests {
     #[test]
     fn midi_packet_next() {
         const BUFFER_SIZE: usize = 65536;
-        let buffer: &mut [u8] = &mut [0; BUFFER_SIZE];
+        let mut buffer = vec![0; BUFFER_SIZE];
         let pkt_list_ptr = buffer.as_mut_ptr().cast::<MIDIPacketList>();
 
         let packets = vec![
@@ -112,7 +112,7 @@ mod tests {
     #[test]
     fn midi_event_packet_next() {
         const BUFFER_SIZE: usize = 65536;
-        let buffer: &mut [u8] = &mut [0; BUFFER_SIZE];
+        let mut buffer = vec![0; BUFFER_SIZE];
         let pkt_list_ptr = buffer.as_mut_ptr().cast::<MIDIEventList>();
 
         let packets = vec![
