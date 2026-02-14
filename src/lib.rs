@@ -14,6 +14,7 @@ use std::{ptr, mem};
 include!("generated.rs");
 
 #[inline]
+#[must_use] 
 pub unsafe fn MIDIPacketNext(pkt: *const MIDIPacket) -> *const MIDIPacket {
     // Get pointer to potentially unaligned data without triggering undefined behavior
     // addr_of does not require creating an intermediate reference to unaligned data.
@@ -36,6 +37,7 @@ pub unsafe fn MIDIPacketNext(pkt: *const MIDIPacket) -> *const MIDIPacket {
 }
 
 #[inline]
+#[must_use] 
 pub unsafe fn MIDIEventPacketNext(pkt: *const MIDIEventPacket) -> *const MIDIEventPacket {
     // Each EventPacket's size is a multiple of 4 bytes, so no special care
     // needs to be taken when reading the data (except the timeStamp, which is not 8-byte aligned).
