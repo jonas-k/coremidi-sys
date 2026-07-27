@@ -1,6 +1,8 @@
 [package]
 name = "coremidi-sys"
 version = "3.2.1"
+edition = "2021"
+rust-version = "1.71.0"
 authors = ["Jonas Klesy", "Patrick Reisert", "Renaud Denis <mail@renauddenis.com>"]
 description = "Low-level FFI bindings for the CoreMIDI framework"
 license = "MIT"
