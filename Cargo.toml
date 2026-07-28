@@ -1,6 +1,6 @@
 [package]
 name = "coremidi-sys"
-version = "3.2.0"
+version = "3.2.1"
 authors = ["Jonas Klesy", "Patrick Reisert", "Renaud Denis <mail@renauddenis.com>"]
 description = "Low-level FFI bindings for the CoreMIDI framework"
 license = "MIT"
