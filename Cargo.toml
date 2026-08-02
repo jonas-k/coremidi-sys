@@ -13,3 +13,7 @@ core-foundation-sys = "0.8.7"
 
 [package.metadata.docs.rs]
 default-target = "x86_64-apple-darwin"
+targets = [
+  "aarch64-apple-darwin",
+  "x86_64-apple-darwin",
+]
