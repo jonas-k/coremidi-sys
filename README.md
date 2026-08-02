@@ -1,5 +1,9 @@
 # coremidi-sys
 
+[![Crates.io](https://img.shields.io/crates/v/coremidi-sys.svg)](https://crates.io/crates/coremidi-sys)
+[![Crates.io](https://img.shields.io/crates/d/coremidi-sys.svg)](https://crates.io/crates/coremidi-sys)
+[![docs.rs](https://img.shields.io/docsrs/coremidi-sys)](https://docs.rs/coremidi-sys)
+
 Low level Rust bindings for CoreMIDI
 
 `generated.rs` is generated with [bindgen](https://github.com/rust-lang/rust-bindgen) 0.69.4 using the following commands:
