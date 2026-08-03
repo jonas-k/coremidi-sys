@@ -17,3 +17,16 @@ targets = [
   "aarch64-apple-darwin",
   "x86_64-apple-darwin",
 ]
+
+[workspace.lints.clippy]
+# Disable the entire pedantic group (highly opinionated/stylistic lints)
+pedantic = "allow"
+
+# Disable the nursery group (experimental and unstable lints)
+nursery = "allow"
+
+# Disable specific subjective lints from standard categories
+redundant_pub_crate = "allow"      # Subjective visibility choices
+cognitive_complexity = "allow"     # Arbitrary thresholds for code complexity
+match_like_matches_macro = "allow" # Sometimes explicit match blocks are more readable
+collapsible_if = "allow"           # Nested if-statements can be cleaner than combined ones

@@ -1,0 +1,40 @@
+name: Rust CI
+
+on:
+	push:
+		branches: [ "master" ]
+	pull_request:
+		branches: [ "master" ]
+
+jobs:
+	build_and_test:
+		# Use macOS runner (defaults to Apple Silicon M-series)
+		runs-on: macos-latest
+
+		steps:
+		# Check out the source code
+		- name: Checkout repository
+			uses: actions/checkout@v7
+
+		# Install and configure the Rust toolchain
+		- name: Set up Rust toolchain
+			uses: dtolnay/rust-toolchain@stable
+			with:
+				components: clippy, rustfmt
+				toolchain: "1.71.0"
+
+		# Run code formatting check
+		- name: Check formatting
+			run: cargo fmt --check
+
+		# Run linter
+		- name: Run Clippy linter
+			run: cargo clippy
+
+		# Build
+		- name: Build project
+			run: cargo build --verbose
+
+		# Execute tests
+		- name: Run tests
+			run: cargo test --verbose

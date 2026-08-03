@@ -1,7 +1,6 @@
 extern crate coremidi_sys as cm;
 
-fn main()
-{
+fn main() {
     let src: u64 = unsafe { cm::MIDIGetNumberOfSources() };
     let dest: u64 = unsafe { cm::MIDIGetNumberOfDestinations() };
 

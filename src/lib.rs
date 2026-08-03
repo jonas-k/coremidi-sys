@@ -1,20 +1,21 @@
 #![cfg(any(target_os = "macos", target_os = "ios"))]
-
 #![allow(non_snake_case, non_upper_case_globals, non_camel_case_types)]
 
 extern crate core_foundation_sys;
 
-use core_foundation_sys::string::*;
 use core_foundation_sys::data::*;
 use core_foundation_sys::dictionary::*;
 use core_foundation_sys::propertylist::*;
+use core_foundation_sys::string::*;
 
-use std::{ptr, mem};
+use std::{mem, ptr};
 
 include!("generated.rs");
 
 #[inline]
-#[must_use] 
+#[must_use]
+/// # Safety
+/// The `pkt` pointer must be valid and non-null
 pub unsafe fn MIDIPacketNext(pkt: *const MIDIPacket) -> *const MIDIPacket {
     // Get pointer to potentially unaligned data without triggering undefined behavior
     // addr_of does not require creating an intermediate reference to unaligned data.
@@ -37,7 +38,9 @@ pub unsafe fn MIDIPacketNext(pkt: *const MIDIPacket) -> *const MIDIPacket {
 }
 
 #[inline]
-#[must_use] 
+#[must_use]
+/// # Safety
+/// The `pkt` pointer must be valid and non-null
 pub unsafe fn MIDIEventPacketNext(pkt: *const MIDIEventPacket) -> *const MIDIEventPacket {
     // Each EventPacket's size is a multiple of 4 bytes, so no special care
     // needs to be taken when reading the data (except the timeStamp, which is not 8-byte aligned).
