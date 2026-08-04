@@ -23,17 +23,20 @@ pub unsafe fn MIDIPacketNext(pkt: *const MIDIPacket) -> *const MIDIPacket {
     let ptr = ptr::addr_of!((*pkt).data).cast::<u8>();
     let ptr_length = ptr::addr_of!((*pkt).length).cast::<u16>();
     if cfg!(any(target_arch = "arm", target_arch = "aarch64")) {
-        // MIDIPacket must be 4-byte aligned on ARM, so we need to calculate an aligned offset.
+        // MIDIPacket must be aligned on ARM, so we need to calculate an aligned offset.
         // We do not need `read_unaligned` for the length, because the length will never
         // be unaligned, and `read_unaligned` would lead to less efficient machine code.
-        let offset = ptr_length.read() as isize;
-        ((ptr.offset(offset + 3) as usize) & !(3usize)) as *const MIDIPacket
+        let length = ptr_length.read() as usize;
+        let ptr = ptr.add(length);
+        let offset = ptr.align_offset(mem::align_of::<MIDIPacket>());
+        debug_assert!(offset != usize::MAX);
+        ptr.add(offset).cast()
     } else {
         // MIDIPacket is unaligned on non-ARM, so reading the length requires `read_unaligned`
         // to not trigger Rust's UB check (although unaligned reads are harmless on Intel
         // and `read_unaligned` will generate the same machine code as `read`).
-        let offset = ptr_length.read_unaligned() as isize;
-        ptr.offset(offset).cast::<MIDIPacket>()
+        let length = ptr_length.read_unaligned() as usize;
+        ptr.add(length).cast()
     }
 }
 
@@ -46,8 +49,8 @@ pub unsafe fn MIDIEventPacketNext(pkt: *const MIDIEventPacket) -> *const MIDIEve
     // needs to be taken when reading the data (except the timeStamp, which is not 8-byte aligned).
     // See also the definition of `MIDIEventPacketNext` in the official SDK MIDIServices.h
     let ptr = ptr::addr_of!((*pkt).words).cast::<u8>();
-    let offset = (((*pkt).wordCount as usize) * mem::size_of::<u32>()) as isize;
-    ptr.offset(offset).cast::<MIDIEventPacket>()
+    let offset = ((*pkt).wordCount as usize) * mem::size_of::<UInt32>();
+    ptr.add(offset).cast()
 }
 
 #[allow(dead_code)]
