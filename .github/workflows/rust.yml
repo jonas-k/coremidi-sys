@@ -29,7 +29,7 @@ jobs:
 
     # Run linter
     - name: Run Clippy linter
-      run: cargo clippy
+      run: cargo clippy --workspace --all-targets --all-features -- -D warnings
 
     # Build
     - name: Build project
