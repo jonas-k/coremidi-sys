@@ -21,11 +21,14 @@ jobs:
       uses: dtolnay/rust-toolchain@stable
       with:
         components: clippy, rustfmt
-        toolchain: "1.71.0"
+        toolchain: "1.56.0"
+
+    # Cache the cargo registry to speed up subsequent builds
+    - uses: Swatinem/rust-cache@v2
 
     # Run code formatting check
     - name: Check formatting
-      run: cargo fmt --check
+      run: cargo fmt -- --check
 
     # Run linter
     - name: Run Clippy linter
